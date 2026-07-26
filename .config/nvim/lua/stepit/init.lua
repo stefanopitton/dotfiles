@@ -101,4 +101,6 @@ require("stepit.tabline")
 require("stepit.statusline")
 require("stepit.filetype")
 
+require("stepit.custom")
+
 require("lazy").setup(spec, opts)
