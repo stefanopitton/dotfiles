@@ -9,7 +9,7 @@ return {
 				typeCheckingMode = "standard",
 				autoSearchPaths = true,
 				useLibraryCodeForTypes = true,
-				diagnosticMode = "openFilesOnly", -- Improves performance on large projects
+				diagnosticMode = "openFilesOnly",
 				autoImportCompletions = true,
 				inlayHints = {
 					variableTypes = true,
