@@ -1,7 +1,7 @@
 [user]
 	name = stepit
 	email = stefanofrancesco.pitton@gmail.com
-	signingkey = 69FAC38058C0AB45B5EF46AEBC65D73D02447F33
+	signingkey = F9C51037B20ABF13
 [includeIf "gitdir:~/Repositories/Blockchain/Noble/"]
     path = ~/Repositories/Blockchain/Noble/.gitconfig
 [branch]
@@ -10,6 +10,7 @@
 	ui = auto
 [tag]
 	sort = version:refname
+	gpgsign = true
 [diff]
 	algorithm = histogram
 	colorMoved = plain
@@ -24,6 +25,7 @@
 	all = true
 [commit]
 	verbose = true
+	gpgsign = true
 [rerere]
 	enabled = true
 	autoupdate = true
