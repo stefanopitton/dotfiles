@@ -10,7 +10,7 @@ This repository contains my personalized configuration files for various command
 
 **nvim**: NeoVim, an extensible text editor that aims to improve upon the traditional Vim editor with modern features and plugins.
 
-**yabai**: A tiling window manager for macOS that allows efficient window management through keyboard shortcuts and customizable layouts.
+**aerospace**: A tiling window manager for macOS that allows efficient window management through keyboard shortcuts and customizable layouts.
 
 ## Usage
 
