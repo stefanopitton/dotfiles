@@ -108,10 +108,23 @@ return {
 								return ""
 							end
 
-							local link_text = citations.create_md_link_from_reference(entry)
+							local ref_text, link_text = citations.create_md_link_from_reference(entry)
+							if not link_text or link_text == "" then
+								vim.notify("No link for the selected entry", vim.log.levels.ERROR)
+							end
 
 							-- Insert at cursor
-							vim.api.nvim_put({ link_text }, "c", true, true)
+							vim.api.nvim_put({ ref_text }, "c", true, true)
+							-- Insert at EOF
+							local n_lines = vim.api.nvim_buf_line_count(0)
+
+							-- We need to set strict_indexing to `false` if we want to create a new line.
+							vim.api.nvim_buf_set_lines(0, n_lines, n_lines + 1, false, { "", link_text })
+
+							-- local last_nonblank = vim.fn.prevnonblank(n_lines)
+							--
+							-- if last_nonblank < n_lines then
+							-- end
 						end,
 					},
 					fzf_opts = {

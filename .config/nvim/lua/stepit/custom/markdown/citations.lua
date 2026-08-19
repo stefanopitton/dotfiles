@@ -27,20 +27,26 @@ function M.get_references_file()
 	return content
 end
 
---- Create a markdown link containing the URL associated with the provided reference.
---- Returns an empty string if the reference does not have any link.
+--- Create a reference-style markdown link from a bibliography reference.
+--- Notifies and returns two empty strings if the reference has no URL.
 ---@param reference table
----@return string
+---@return string ref_text Inline reference, e.g. `[key]`
+---@return string link_text Link definition, e.g. `[key]: url "title"`
 function M.create_md_link_from_reference(reference)
 	-- Build markdown reference-style link.
-	local link_text
-	if reference.url ~= "" then
-		link_text = string.format('[%s]: %s "%s"', reference.key, reference.url, reference.title)
-	else
+	if not reference.url or reference.url == "" then
 		vim.notify("Selected entry does not have an URL", vim.log.levels.WARN)
-		return ""
+		return "", ""
 	end
-	return link_text
+
+	if not reference.key or reference.key == "" then
+		vim.notify("Selected entry does not have a citation key", vim.log.levels.WARN)
+		return "", ""
+	end
+
+	local ref_text = string.format("[%s]", reference.key)
+	local link_text = string.format('[%s]: %s "%s"', reference.key, reference.url, reference.title)
+	return ref_text, link_text
 end
 
 --- Parse the content into separate Better BibTex references.
