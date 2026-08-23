@@ -7,11 +7,9 @@ local i = ls.insert_node
 local function in_latex()
 	local has_parser, parser = pcall(vim.treesitter.get_parser, 0, "markdown")
 	if not has_parser or parser == nil then
-		vim.notify("we DON'T have the parser", "log")
+		vim.notify("we DON'T have the parser", vim.log.levels.WARN)
 		return false
 	end
-
-	vim.notify("we have the parser", "log")
 
 	local cursor = vim.api.nvim_win_get_cursor(0)
 	-- remove 1 from the row because treesitter start from 0, but lines are indexed from 1.
