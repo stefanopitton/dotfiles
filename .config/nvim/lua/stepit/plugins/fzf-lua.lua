@@ -18,6 +18,7 @@ return {
 				close_mini_files()
 				require("fzf-lua").files({
 					cwd_prompt = false,
+					previewer = "builtin",
 				})
 			end,
 			desc = "[F]ind [F]iles",

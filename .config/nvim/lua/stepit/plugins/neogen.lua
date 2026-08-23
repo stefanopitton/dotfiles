@@ -6,7 +6,7 @@ return {
 			languages = {
 				python = {
 					template = {
-						annotation_convention = "numpydoc", -- for a full list of annotation_conventions, see supported-languages below,
+						annotation_convention = "numpydoc",
 					},
 				},
 			},
