@@ -25,3 +25,5 @@
 # Misc
 ./configstore/*
 .config/claude/
+
+.DS_Store

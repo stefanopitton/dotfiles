@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# tmux requires session:window.pane
+tmux list-panes -a -F "#{window_name} | #{b:pane_current_path} | #{session_name}:#{window_index}.#{pane_index}" |
+    awk -F'|' '{ printf "%-20s | %-20s | %s\n", $1, $2, $3 }' |
+    fzf --height 40% --reverse --header 'Switch to pane' |
+    cut -d'|' -f3 | # session:window.pane is the third column
+    xargs tmux switch-client -t
