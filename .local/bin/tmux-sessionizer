@@ -1,13 +1,39 @@
 #!/usr/bin/env bash
+set -uo pipefail
 
-selected=$(find "$REPOS" -mindepth 1 -maxdepth 2 -type d | fzf)
-# Exit if the string is null
-[ -z "$selected" ] && exit 0
+# Roots to scan for project directories. Unset or missing entries are set to empty value and skipped.
+roots=("${REPOS:-}" "${REPOS:+$REPOS/projects}" "${DOTFILES:-}" "${KNOWLEDGE_BASE:-}")
 
-session_name=$(basename "$selected" | tr . _)
+# Accumulator for valid roots.
+search=()
+for root in "${roots[@]}"; do
+    [ -n "$root" ] && [ -d "$root" ] && search+=("$root")
+done
 
-if ! tmux has-session -t "$session_name" 2>/dev/null; then
-    tmux new-session -ds "$session_name" -c "$selected"
+if [ ${#search[@]} -eq 0 ]; then
+    echo "tmux-sessionizer: none of \$REPOS, \$DOTFILES, \$KNOWLEDGE_BASE point at a directory" >&2
+    exit 1
 fi
 
-tmux switch-client -t "$session_name" 2>/dev/null || tmux attach -t "$session_name"
+# We display sessions with a * in front.
+sessions=$(tmux list-sessions -F '* #{session_name}' 2>/dev/null)
+dirs=$(find "${search[@]}" -mindepth 1 -maxdepth 1 -type d)
+
+selected=$(printf '%s\n%s\n' "$sessions" "$dirs" | grep -v '^$' | fzf --height 40% --reverse --header 'Select session or window:')
+[ -z "$selected" ] && exit 0 # short circuit if the length is zero
+
+if [[ "$selected" == "* "* ]]; then
+    session_name="${selected#* }"
+else
+    session_name=$(basename "$selected" | tr . _)
+    if ! tmux has-session -t "=$session_name" 2>/dev/null; then
+        tmux new-session -ds "$session_name" -c "$selected"
+    fi
+fi
+
+# The env variable exists only if we are attached to a session in tmux.
+if [ -n "${TMUX:-}" ]; then
+    tmux switch-client -t "=$session_name"
+else
+    tmux attach -t "=$session_name"
+fi
