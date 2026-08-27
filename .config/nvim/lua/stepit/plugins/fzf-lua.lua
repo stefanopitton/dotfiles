@@ -109,10 +109,13 @@ return {
 								return ""
 							end
 
-							local ref_text, link_text = citations.create_md_link_from_reference(entry)
+							local ref_text, link_text, title = citations.create_md_link_from_reference(entry)
 							if not link_text or link_text == "" then
 								vim.notify("No link for the selected entry", vim.log.levels.ERROR)
 							end
+
+							-- Copy the title to the system clipboard.
+							vim.fn.setreg("+", title)
 
 							-- Insert at cursor
 							vim.api.nvim_put({ ref_text }, "c", true, true)
