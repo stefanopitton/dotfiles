@@ -91,7 +91,6 @@ local opts = {
 
 require("stepit.globals")
 require("stepit.options")
-require("stepit.utils.fold").setup()
 require("stepit.keymaps")
 require("stepit.autocommands")
 require("stepit.notes")

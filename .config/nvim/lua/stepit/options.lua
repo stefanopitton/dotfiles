@@ -67,22 +67,6 @@ opt.spelllang = { "en" }
 opt.spell = false
 
 -- Folding
-function FoldStyle()
-	local foldstart = vim.v.foldstart
-	local foldend = vim.v.foldend
-	local first_line = vim.fn.getline(foldstart)
-	local last_line = vim.fn.getline(foldend)
-	local line_count = foldend - foldstart + 1
-
-	-- Remove leading whitespace
-	first_line = first_line:gsub("^%s*", "")
-	last_line = last_line:gsub("^%s*", "")
-
-	-- VSCode-style: "function foo() { ...10 lines... }"
-	return string.format("  %s ...%d lines... %s", first_line, line_count, last_line)
-end
-
--- opt.statuscolumn='%s%C  %l%=  '
 opt.foldcolumn = "0"
 opt.foldenable = true
 opt.foldmethod = "indent"
