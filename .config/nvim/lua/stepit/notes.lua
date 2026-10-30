@@ -541,7 +541,12 @@ function M.create_note()
 					vim.notify("Enter a search query to create a new note", vim.log.levels.WARN)
 					return
 				end
-				create_note_with_title(query)
+				-- Wait for the first fzf terminal to fully close and its queued
+				-- insert-mode keystroke to be consumed; otherwise it bleeds
+				-- through as a literal "i" in the tag search query.
+				vim.defer_fn(function()
+					create_note_with_title(query)
+				end, 50)
 			end,
 		},
 	})
